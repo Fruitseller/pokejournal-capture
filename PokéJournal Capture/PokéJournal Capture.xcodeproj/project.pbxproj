@@ -407,6 +407,9 @@
 				DEVELOPMENT_TEAM = 2DPUG448BC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Poke-Journal-Capture-Info.plist";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "PokéJournal Capture benötigt Zugriff auf das Mikrofon, um Sprachnotizen aufzunehmen und zu transkribieren.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "PokéJournal Capture verwendet Spracherkennung, um deine gesprochenen Notizen in Text umzuwandeln.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -439,6 +442,9 @@
 				DEVELOPMENT_TEAM = 2DPUG448BC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Poke-Journal-Capture-Info.plist";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "PokéJournal Capture benötigt Zugriff auf das Mikrofon, um Sprachnotizen aufzunehmen und zu transkribieren.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "PokéJournal Capture verwendet Spracherkennung, um deine gesprochenen Notizen in Text umzuwandeln.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

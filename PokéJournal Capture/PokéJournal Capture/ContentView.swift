@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  PokéJournal Capture
+//  PokéJournal Capture
 //
 //  Created by Piotr Großmann on 31.01.26.
 //
@@ -10,52 +10,88 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query(filter: #Predicate<DraftSession> { $0.statusRaw == "draft" },
+           sort: \DraftSession.updatedAt, order: .reverse)
+    private var drafts: [DraftSession]
+
+    @State private var currentSession: DraftSession?
+    @State private var showingDrafts = false
+    @State private var showingGames = false
 
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+        NavigationStack {
+            SessionEditorView(session: currentSessionBinding)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Menu {
+                            Button {
+                                showingDrafts = true
+                            } label: {
+                                Label("Entwürfe (\(drafts.count))", systemImage: "doc.text")
+                            }
+
+                            Button {
+                                showingGames = true
+                            } label: {
+                                Label("Spiele verwalten", systemImage: "gamecontroller")
+                            }
+
+                            Divider()
+
+                            Button {
+                                createNewSession()
+                            } label: {
+                                Label("Neue Session", systemImage: "plus")
+                            }
+                        } label: {
+                            Image(systemName: "line.3.horizontal")
+                                .font(.title2)
+                        }
                     }
                 }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
+                .sheet(isPresented: $showingDrafts) {
+                    DraftsListView(onSelect: { session in
+                        currentSession = session
+                        showingDrafts = false
+                    })
                 }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
+                .sheet(isPresented: $showingGames) {
+                    GamesManagementView()
                 }
-            }
-        } detail: {
-            Text("Select an item")
+        }
+        .onAppear {
+            initializeSession()
         }
     }
 
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
+    private var currentSessionBinding: Binding<DraftSession> {
+        Binding(
+            get: { currentSession ?? createAndReturnNewSession() },
+            set: { currentSession = $0 }
+        )
+    }
+
+    private func initializeSession() {
+        if let latestDraft = drafts.first {
+            currentSession = latestDraft
+        } else {
+            createNewSession()
         }
     }
 
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
-        }
+    private func createNewSession() {
+        let session = DraftSession()
+        modelContext.insert(session)
+        currentSession = session
+    }
+
+    private func createAndReturnNewSession() -> DraftSession {
+        let session = DraftSession()
+        modelContext.insert(session)
+        currentSession = session
+        return session
     }
 }
 
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
-}
+// Note: SwiftData Previews are currently broken in Xcode.
+// Use Simulator (Cmd+R) to test the app.

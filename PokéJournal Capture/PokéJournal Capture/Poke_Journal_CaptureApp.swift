@@ -1,6 +1,6 @@
 //
 //  Poke_Journal_CaptureApp.swift
-//  PokéJournal Capture
+//  PokéJournal Capture
 //
 //  Created by Piotr Großmann on 31.01.26.
 //
@@ -12,7 +12,9 @@ import SwiftData
 struct Poke_Journal_CaptureApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            DraftSession.self,
+            Game.self,
+            TeamMember.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -26,6 +28,7 @@ struct Poke_Journal_CaptureApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .preferredColorScheme(.dark)
         }
         .modelContainer(sharedModelContainer)
     }
