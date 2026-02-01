@@ -8,6 +8,10 @@ PokéJournal Capture is a native iOS companion app for capturing Pokémon gaming
 
 **Language:** All UI strings and Pokémon data are in German.
 
+## Git Conventions
+
+Keep commit messages short and concise - single line preferred, no bullet point lists.
+
 ## Build Commands
 
 ```bash
