@@ -16,38 +16,38 @@
 			containerPortal = AE2BD7132F2EC0BE00078700 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = AE2BD71A2F2EC0BE00078700;
-			remoteInfo = "PokéJournal Capture";
+			remoteInfo = "PokeJournal Capture";
 		};
 		AE2BD7352F2EC0BE00078700 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AE2BD7132F2EC0BE00078700 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = AE2BD71A2F2EC0BE00078700;
-			remoteInfo = "PokéJournal Capture";
+			remoteInfo = "PokeJournal Capture";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		AE2BD71B2F2EC0BE00078700 /* PokéJournal Capture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PokéJournal Capture.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AE2BD72A2F2EC0BE00078700 /* PokéJournal CaptureTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PokéJournal CaptureTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AE2BD7342F2EC0BE00078700 /* PokéJournal CaptureUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PokéJournal CaptureUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE2BD71B2F2EC0BE00078700 /* PokeJournal Capture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PokeJournal Capture.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE2BD72A2F2EC0BE00078700 /* PokeJournal CaptureTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PokeJournal CaptureTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE2BD7342F2EC0BE00078700 /* PokeJournal CaptureUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PokeJournal CaptureUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE2BD7472F2EC0D800078700 /* PLAN.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = PLAN.md; path = ../PLAN.md; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		AE2BD71D2F2EC0BE00078700 /* PokéJournal Capture */ = {
+		AE2BD71D2F2EC0BE00078700 /* PokeJournal Capture */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "PokéJournal Capture";
+			path = "PokeJournal Capture";
 			sourceTree = "<group>";
 		};
-		AE2BD72D2F2EC0BE00078700 /* PokéJournal CaptureTests */ = {
+		AE2BD72D2F2EC0BE00078700 /* PokeJournal CaptureTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "PokéJournal CaptureTests";
+			path = "PokeJournal CaptureTests";
 			sourceTree = "<group>";
 		};
-		AE2BD7372F2EC0BE00078700 /* PokéJournal CaptureUITests */ = {
+		AE2BD7372F2EC0BE00078700 /* PokeJournal CaptureUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "PokéJournal CaptureUITests";
+			path = "PokeJournal CaptureUITests";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -81,9 +81,9 @@
 			isa = PBXGroup;
 			children = (
 				AE2BD7472F2EC0D800078700 /* PLAN.md */,
-				AE2BD71D2F2EC0BE00078700 /* PokéJournal Capture */,
-				AE2BD72D2F2EC0BE00078700 /* PokéJournal CaptureTests */,
-				AE2BD7372F2EC0BE00078700 /* PokéJournal CaptureUITests */,
+				AE2BD71D2F2EC0BE00078700 /* PokeJournal Capture */,
+				AE2BD72D2F2EC0BE00078700 /* PokeJournal CaptureTests */,
+				AE2BD7372F2EC0BE00078700 /* PokeJournal CaptureUITests */,
 				AE2BD71C2F2EC0BE00078700 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -91,9 +91,9 @@
 		AE2BD71C2F2EC0BE00078700 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AE2BD71B2F2EC0BE00078700 /* PokéJournal Capture.app */,
-				AE2BD72A2F2EC0BE00078700 /* PokéJournal CaptureTests.xctest */,
-				AE2BD7342F2EC0BE00078700 /* PokéJournal CaptureUITests.xctest */,
+				AE2BD71B2F2EC0BE00078700 /* PokeJournal Capture.app */,
+				AE2BD72A2F2EC0BE00078700 /* PokeJournal CaptureTests.xctest */,
+				AE2BD7342F2EC0BE00078700 /* PokeJournal CaptureUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -101,31 +101,32 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AE2BD71A2F2EC0BE00078700 /* PokéJournal Capture */ = {
+		AE2BD71A2F2EC0BE00078700 /* PokeJournal Capture */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AE2BD73E2F2EC0BE00078700 /* Build configuration list for PBXNativeTarget "PokéJournal Capture" */;
+			buildConfigurationList = AE2BD73E2F2EC0BE00078700 /* Build configuration list for PBXNativeTarget "PokeJournal Capture" */;
 			buildPhases = (
 				AE2BD7172F2EC0BE00078700 /* Sources */,
 				AE2BD7182F2EC0BE00078700 /* Frameworks */,
 				AE2BD7192F2EC0BE00078700 /* Resources */,
+				AE2BD7502F2EC0BE00078700 /* Set Display Name */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				AE2BD71D2F2EC0BE00078700 /* PokéJournal Capture */,
+				AE2BD71D2F2EC0BE00078700 /* PokeJournal Capture */,
 			);
-			name = "PokéJournal Capture";
+			name = "PokeJournal Capture";
 			packageProductDependencies = (
 			);
-			productName = "PokéJournal Capture";
-			productReference = AE2BD71B2F2EC0BE00078700 /* PokéJournal Capture.app */;
+			productName = "PokeJournal Capture";
+			productReference = AE2BD71B2F2EC0BE00078700 /* PokeJournal Capture.app */;
 			productType = "com.apple.product-type.application";
 		};
-		AE2BD7292F2EC0BE00078700 /* PokéJournal CaptureTests */ = {
+		AE2BD7292F2EC0BE00078700 /* PokeJournal CaptureTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AE2BD7412F2EC0BE00078700 /* Build configuration list for PBXNativeTarget "PokéJournal CaptureTests" */;
+			buildConfigurationList = AE2BD7412F2EC0BE00078700 /* Build configuration list for PBXNativeTarget "PokeJournal CaptureTests" */;
 			buildPhases = (
 				AE2BD7262F2EC0BE00078700 /* Sources */,
 				AE2BD7272F2EC0BE00078700 /* Frameworks */,
@@ -137,18 +138,18 @@
 				AE2BD72C2F2EC0BE00078700 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				AE2BD72D2F2EC0BE00078700 /* PokéJournal CaptureTests */,
+				AE2BD72D2F2EC0BE00078700 /* PokeJournal CaptureTests */,
 			);
-			name = "PokéJournal CaptureTests";
+			name = "PokeJournal CaptureTests";
 			packageProductDependencies = (
 			);
-			productName = "PokéJournal CaptureTests";
-			productReference = AE2BD72A2F2EC0BE00078700 /* PokéJournal CaptureTests.xctest */;
+			productName = "PokeJournal CaptureTests";
+			productReference = AE2BD72A2F2EC0BE00078700 /* PokeJournal CaptureTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		AE2BD7332F2EC0BE00078700 /* PokéJournal CaptureUITests */ = {
+		AE2BD7332F2EC0BE00078700 /* PokeJournal CaptureUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AE2BD7442F2EC0BE00078700 /* Build configuration list for PBXNativeTarget "PokéJournal CaptureUITests" */;
+			buildConfigurationList = AE2BD7442F2EC0BE00078700 /* Build configuration list for PBXNativeTarget "PokeJournal CaptureUITests" */;
 			buildPhases = (
 				AE2BD7302F2EC0BE00078700 /* Sources */,
 				AE2BD7312F2EC0BE00078700 /* Frameworks */,
@@ -160,13 +161,13 @@
 				AE2BD7362F2EC0BE00078700 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				AE2BD7372F2EC0BE00078700 /* PokéJournal CaptureUITests */,
+				AE2BD7372F2EC0BE00078700 /* PokeJournal CaptureUITests */,
 			);
-			name = "PokéJournal CaptureUITests";
+			name = "PokeJournal CaptureUITests";
 			packageProductDependencies = (
 			);
-			productName = "PokéJournal CaptureUITests";
-			productReference = AE2BD7342F2EC0BE00078700 /* PokéJournal CaptureUITests.xctest */;
+			productName = "PokeJournal CaptureUITests";
+			productReference = AE2BD7342F2EC0BE00078700 /* PokeJournal CaptureUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -192,7 +193,7 @@
 					};
 				};
 			};
-			buildConfigurationList = AE2BD7162F2EC0BE00078700 /* Build configuration list for PBXProject "PokéJournal Capture" */;
+			buildConfigurationList = AE2BD7162F2EC0BE00078700 /* Build configuration list for PBXProject "PokeJournal Capture" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -206,12 +207,30 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AE2BD71A2F2EC0BE00078700 /* PokéJournal Capture */,
-				AE2BD7292F2EC0BE00078700 /* PokéJournal CaptureTests */,
-				AE2BD7332F2EC0BE00078700 /* PokéJournal CaptureUITests */,
+				AE2BD71A2F2EC0BE00078700 /* PokeJournal Capture */,
+				AE2BD7292F2EC0BE00078700 /* PokeJournal CaptureTests */,
+				AE2BD7332F2EC0BE00078700 /* PokeJournal CaptureUITests */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		AE2BD7502F2EC0BE00078700 /* Set Display Name */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Set Display Name";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/libexec/PlistBuddy -c \"Set :CFBundleName PokéJournal Capture\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXResourcesBuildPhase section */
 		AE2BD7192F2EC0BE00078700 /* Resources */ = {
@@ -265,12 +284,12 @@
 /* Begin PBXTargetDependency section */
 		AE2BD72C2F2EC0BE00078700 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = AE2BD71A2F2EC0BE00078700 /* PokéJournal Capture */;
+			target = AE2BD71A2F2EC0BE00078700 /* PokeJournal Capture */;
 			targetProxy = AE2BD72B2F2EC0BE00078700 /* PBXContainerItemProxy */;
 		};
 		AE2BD7362F2EC0BE00078700 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = AE2BD71A2F2EC0BE00078700 /* PokéJournal Capture */;
+			target = AE2BD71A2F2EC0BE00078700 /* PokeJournal Capture */;
 			targetProxy = AE2BD7352F2EC0BE00078700 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -406,6 +425,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2DPUG448BC;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Poke-Journal-Capture-Info.plist";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "PokéJournal Capture benötigt Zugriff auf das Mikrofon, um Sprachnotizen aufzunehmen und zu transkribieren.";
@@ -441,6 +461,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2DPUG448BC;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Poke-Journal-Capture-Info.plist";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "PokéJournal Capture benötigt Zugriff auf das Mikrofon, um Sprachnotizen aufzunehmen und zu transkribieren.";
@@ -485,7 +506,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PokéJournal Capture.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PokéJournal Capture";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PokeJournal Capture.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PokeJournal Capture";
 			};
 			name = Debug;
 		};
@@ -507,7 +528,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PokéJournal Capture.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PokéJournal Capture";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PokeJournal Capture.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PokeJournal Capture";
 			};
 			name = Release;
 		};
@@ -527,7 +548,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "PokéJournal Capture";
+				TEST_TARGET_NAME = "PokeJournal Capture";
 			};
 			name = Debug;
 		};
@@ -547,14 +568,14 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "PokéJournal Capture";
+				TEST_TARGET_NAME = "PokeJournal Capture";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AE2BD7162F2EC0BE00078700 /* Build configuration list for PBXProject "PokéJournal Capture" */ = {
+		AE2BD7162F2EC0BE00078700 /* Build configuration list for PBXProject "PokeJournal Capture" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AE2BD73C2F2EC0BE00078700 /* Debug */,
@@ -563,7 +584,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AE2BD73E2F2EC0BE00078700 /* Build configuration list for PBXNativeTarget "PokéJournal Capture" */ = {
+		AE2BD73E2F2EC0BE00078700 /* Build configuration list for PBXNativeTarget "PokeJournal Capture" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AE2BD73F2F2EC0BE00078700 /* Debug */,
@@ -572,7 +593,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AE2BD7412F2EC0BE00078700 /* Build configuration list for PBXNativeTarget "PokéJournal CaptureTests" */ = {
+		AE2BD7412F2EC0BE00078700 /* Build configuration list for PBXNativeTarget "PokeJournal CaptureTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AE2BD7422F2EC0BE00078700 /* Debug */,
@@ -581,7 +602,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AE2BD7442F2EC0BE00078700 /* Build configuration list for PBXNativeTarget "PokéJournal CaptureUITests" */ = {
+		AE2BD7442F2EC0BE00078700 /* Build configuration list for PBXNativeTarget "PokeJournal CaptureUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AE2BD7452F2EC0BE00078700 /* Debug */,

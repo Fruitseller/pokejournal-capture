@@ -6,9 +6,9 @@
 //
 
 import Testing
-@testable import Poke_Journal_Capture
+@testable import PokeJournal_Capture
 
-struct Poke_Journal_CaptureTests {
+struct PokeJournal_CaptureTests {
 
     @Test func example() async throws {
         // Write your test here and use APIs like `#expect(...)` to check expected conditions.

@@ -21,7 +21,7 @@ iOS-Companion-App zur schnellen Erfassung von Pokémon-Session-Notizen während 
 ## Projektstruktur
 
 ```
-PokéJournal Capture/
+PokeJournal Capture/
 ├── Models/
 │   ├── DraftSession.swift    # Haupt-Datenmodell für Sessions
 │   ├── Game.swift            # Spielverwaltung
@@ -56,12 +56,12 @@ PokéJournal Capture/
 
 ```bash
 # Schemes auflisten
-xcodebuild -list -project "PokéJournal Capture/PokéJournal Capture.xcodeproj"
+xcodebuild -list -project "PokeJournal Capture/PokeJournal Capture.xcodeproj"
 
 # Build
 xcodebuild build \
-  -project "PokéJournal Capture/PokéJournal Capture.xcodeproj" \
-  -scheme "PokéJournal Capture" \
+  -project "PokeJournal Capture/PokeJournal Capture.xcodeproj" \
+  -scheme "PokeJournal Capture" \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
 

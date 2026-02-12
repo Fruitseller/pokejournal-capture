@@ -16,18 +16,18 @@ Keep commit messages short and concise - single line preferred, no bullet point 
 
 ```bash
 # List available schemes
-xcodebuild -list -project "PokéJournal Capture/PokéJournal Capture.xcodeproj"
+xcodebuild -list -project "PokeJournal Capture/PokeJournal Capture.xcodeproj"
 
 # Build for simulator
 xcodebuild build \
-  -project "PokéJournal Capture/PokéJournal Capture.xcodeproj" \
-  -scheme "PokéJournal Capture" \
+  -project "PokeJournal Capture/PokeJournal Capture.xcodeproj" \
+  -scheme "PokeJournal Capture" \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 
 # Run tests
 xcodebuild test \
-  -project "PokéJournal Capture/PokéJournal Capture.xcodeproj" \
-  -scheme "PokéJournal Capture" \
+  -project "PokeJournal Capture/PokeJournal Capture.xcodeproj" \
+  -scheme "PokeJournal Capture" \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
 
