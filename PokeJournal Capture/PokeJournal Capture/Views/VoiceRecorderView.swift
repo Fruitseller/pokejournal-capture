@@ -159,6 +159,9 @@ struct VoiceRecorderView: View {
                 } catch SpeechRecognizer.RecognizerError.notPermittedToRecord {
                     permissionMessage = "Bitte erlaube Mikrofonzugriff in den Einstellungen."
                     showingPermissionAlert = true
+                } catch SpeechRecognizer.RecognizerError.recognizerUnavailable {
+                    permissionMessage = "Spracherkennung ist auf diesem Gerät nicht verfügbar. Bitte stelle sicher, dass die deutsche Sprache heruntergeladen ist."
+                    showingPermissionAlert = true
                 } catch {
                     permissionMessage = "Ein Fehler ist aufgetreten: \(error.localizedDescription)"
                     showingPermissionAlert = true
@@ -215,12 +218,19 @@ class SpeechRecognizer: ObservableObject {
     private var request: SFSpeechAudioBufferRecognitionRequest?
     private var task: SFSpeechRecognitionTask?
     private let recognizer: SFSpeechRecognizer?
+    private var confirmedTranscription: String = ""
+    private var lastResultLength: Int = 0
 
     init() {
         recognizer = SFSpeechRecognizer(locale: Locale(identifier: "de-DE"))
     }
 
     func startTranscribing() async throws {
+        // Reset transcription state
+        transcript = ""
+        confirmedTranscription = ""
+        lastResultLength = 0
+
         // Request authorization
         let authStatus = await withCheckedContinuation { continuation in
             SFSpeechRecognizer.requestAuthorization { status in
@@ -270,17 +280,54 @@ class SpeechRecognizer: ObservableObject {
         try audioEngine.start()
 
         task = recognizer.recognitionTask(with: request) { [weak self] result, error in
-            if let result = result {
-                Task { @MainActor in
-                    self?.transcript = result.bestTranscription.formattedString
-                }
-            }
-            if error != nil || (result?.isFinal ?? false) {
-                Task { @MainActor in
-                    self?.stopTranscribing()
-                }
+            Task { @MainActor in
+                guard let self = self else { return }
+                self.handleRecognitionResult(result: result, error: error)
             }
         }
+    }
+
+    private func handleRecognitionResult(result: SFSpeechRecognitionResult?, error: Error?) {
+        if let result = result {
+            let newText = result.bestTranscription.formattedString
+            let newLength = newText.count
+
+            // iOS resets recognition after pauses, causing shorter results.
+            // Detect this and preserve the existing transcription.
+            if newLength < lastResultLength && lastResultLength > 0 {
+                confirmCurrentTranscription()
+            }
+
+            lastResultLength = newLength
+
+            if confirmedTranscription.isEmpty {
+                transcript = newText
+            } else if !newText.isEmpty {
+                transcript = confirmedTranscription + " " + newText
+            }
+
+            if result.isFinal {
+                confirmCurrentTranscription()
+            }
+        }
+
+        if let error = error {
+            let nsError = error as NSError
+            let isExpectedError = nsError.domain == "kAFAssistantErrorDomain"
+
+            if isExpectedError {
+                confirmCurrentTranscription()
+            } else {
+                stopTranscribing()
+            }
+        }
+    }
+
+    private func confirmCurrentTranscription() {
+        if !transcript.isEmpty {
+            confirmedTranscription = transcript
+        }
+        lastResultLength = 0
     }
 
     func stopTranscribing() {
