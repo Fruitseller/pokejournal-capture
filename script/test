@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e
+trap 'prove_it record --name full-tests --result $?' EXIT
+xcodebuild test \
+  -project "PokeJournal Capture/PokeJournal Capture.xcodeproj" \
+  -scheme "PokeJournal Capture" \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
