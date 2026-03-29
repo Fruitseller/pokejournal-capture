@@ -33,6 +33,14 @@ final class PokemonDataStore: ObservableObject {
         loadPokemon()
     }
 
+    #if DEBUG
+    /// Test-only initializer that skips bundle loading.
+    init(testPokemon: [Pokemon]) {
+        self.pokemon = testPokemon
+        self.isLoaded = true
+    }
+    #endif
+
     private func loadPokemon() {
         guard let url = Bundle.main.url(forResource: "pokemon", withExtension: "json") else {
             print("Pokemon JSON not found in bundle")

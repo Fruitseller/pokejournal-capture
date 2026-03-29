@@ -1,0 +1,7 @@
+[
+  {"id": 1, "name_de": "Bisasam", "name_en": "Bulbasaur", "types": ["Pflanze", "Gift"]},
+  {"id": 4, "name_de": "Glumanda", "name_en": "Charmander", "types": ["Feuer"]},
+  {"id": 7, "name_de": "Schiggy", "name_en": "Squirtle", "types": ["Wasser"]},
+  {"id": 25, "name_de": "Pikachu", "name_en": "Pikachu", "types": ["Elektro"]},
+  {"id": 150, "name_de": "Mewtu", "name_en": "Mewtwo", "types": ["Psycho"]}
+]

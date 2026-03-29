@@ -60,3 +60,6 @@ fastlane/test_output
 
 # Code Injection
 iOSInjectionProject/
+
+# Generated Pokemon data — regenerate with: python3 scripts/fetch_pokemon_data.py
+PokeJournal Capture/PokeJournal Capture/Resources/pokemon.json

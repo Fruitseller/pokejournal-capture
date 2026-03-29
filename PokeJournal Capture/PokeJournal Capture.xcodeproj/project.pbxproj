@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		AE2BD7482F2EC0D800078700 /* PLAN.md in Resources */ = {isa = PBXBuildFile; fileRef = AE2BD7472F2EC0D800078700 /* PLAN.md */; };
+		AEC563282F79AFB000DC85CF /* CLAUDE.md in Resources */ = {isa = PBXBuildFile; fileRef = AEC563262F79AFB000DC85CF /* CLAUDE.md */; };
+		AEC563292F79AFB000DC85CF /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = AEC563272F79AFB000DC85CF /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +34,8 @@
 		AE2BD72A2F2EC0BE00078700 /* PokeJournal CaptureTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PokeJournal CaptureTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE2BD7342F2EC0BE00078700 /* PokeJournal CaptureUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PokeJournal CaptureUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE2BD7472F2EC0D800078700 /* PLAN.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = PLAN.md; path = ../PLAN.md; sourceTree = SOURCE_ROOT; };
+		AEC563262F79AFB000DC85CF /* CLAUDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = CLAUDE.md; path = ../CLAUDE.md; sourceTree = SOURCE_ROOT; };
+		AEC563272F79AFB000DC85CF /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -49,6 +53,12 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "PokeJournal CaptureUITests";
 			sourceTree = "<group>";
+		};
+		AEC563242F79AF8500DC85CF /* plans */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			name = plans;
+			path = ../plans;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -80,6 +90,9 @@
 		AE2BD7122F2EC0BE00078700 = {
 			isa = PBXGroup;
 			children = (
+				AEC563262F79AFB000DC85CF /* CLAUDE.md */,
+				AEC563272F79AFB000DC85CF /* README.md */,
+				AEC563242F79AF8500DC85CF /* plans */,
 				AE2BD7472F2EC0D800078700 /* PLAN.md */,
 				AE2BD71D2F2EC0BE00078700 /* PokeJournal Capture */,
 				AE2BD72D2F2EC0BE00078700 /* PokeJournal CaptureTests */,
@@ -116,6 +129,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				AE2BD71D2F2EC0BE00078700 /* PokeJournal Capture */,
+				AEC563242F79AF8500DC85CF /* plans */,
 			);
 			name = "PokeJournal Capture";
 			packageProductDependencies = (
@@ -214,29 +228,13 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		AE2BD7502F2EC0BE00078700 /* Set Display Name */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Set Display Name";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/libexec/PlistBuddy -c \"Set :CFBundleName PokéJournal Capture\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXResourcesBuildPhase section */
 		AE2BD7192F2EC0BE00078700 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEC563282F79AFB000DC85CF /* CLAUDE.md in Resources */,
+				AEC563292F79AFB000DC85CF /* README.md in Resources */,
 				AE2BD7482F2EC0D800078700 /* PLAN.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -256,6 +254,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		AE2BD7502F2EC0BE00078700 /* Set Display Name */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Set Display Name";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/libexec/PlistBuddy -c \"Set :CFBundleName PokéJournal Capture\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AE2BD7172F2EC0BE00078700 /* Sources */ = {
