@@ -15,60 +15,56 @@ struct ContentView: View {
     private var drafts: [DraftSession]
 
     @State private var currentSession: DraftSession?
-    @State private var showingDrafts = false
-    @State private var showingGames = false
+    @State private var selectedTab: AppTab = .session
+
+    enum AppTab: Hashable {
+        case session
+        case drafts
+        case games
+    }
 
     var body: some View {
-        NavigationStack {
-            SessionEditorView(session: currentSessionBinding)
-                .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Menu {
-                            Button {
-                                showingDrafts = true
-                            } label: {
-                                Label("Entwürfe (\(drafts.count))", systemImage: "doc.text")
+        TabView(selection: $selectedTab) {
+            Tab("Session", systemImage: "gamecontroller.fill", value: AppTab.session) {
+                NavigationStack {
+                    if let session = currentSession {
+                        SessionEditorView(session: Binding(
+                            get: { session },
+                            set: { currentSession = $0 }
+                        ))
+                        .id(session.id)
+                        .toolbar {
+                            ToolbarItem(placement: .topBarLeading) {
+                                Button {
+                                    createNewSession()
+                                } label: {
+                                    Image(systemName: "plus")
+                                }
                             }
-
-                            Button {
-                                showingGames = true
-                            } label: {
-                                Label("Spiele verwalten", systemImage: "gamecontroller")
-                            }
-
-                            Divider()
-
-                            Button {
-                                createNewSession()
-                            } label: {
-                                Label("Neue Session", systemImage: "plus")
-                            }
-                        } label: {
-                            Image(systemName: "line.3.horizontal")
-                                .font(.title2)
                         }
                     }
                 }
-                .sheet(isPresented: $showingDrafts) {
+            }
+
+            Tab("Entwürfe", systemImage: "doc.text", value: AppTab.drafts) {
+                NavigationStack {
                     DraftsListView(onSelect: { session in
                         currentSession = session
-                        showingDrafts = false
+                        selectedTab = .session
                     })
                 }
-                .sheet(isPresented: $showingGames) {
+            }
+            .badge(drafts.count)
+
+            Tab("Spiele", systemImage: "list.bullet", value: AppTab.games) {
+                NavigationStack {
                     GamesManagementView()
                 }
+            }
         }
         .onAppear {
             initializeSession()
         }
-    }
-
-    private var currentSessionBinding: Binding<DraftSession> {
-        Binding(
-            get: { currentSession ?? createAndReturnNewSession() },
-            set: { currentSession = $0 }
-        )
     }
 
     private func initializeSession() {
@@ -84,14 +80,4 @@ struct ContentView: View {
         modelContext.insert(session)
         currentSession = session
     }
-
-    private func createAndReturnNewSession() -> DraftSession {
-        let session = DraftSession()
-        modelContext.insert(session)
-        currentSession = session
-        return session
-    }
 }
-
-// Note: SwiftData Previews are currently broken in Xcode.
-// Use Simulator (Cmd+R) to test the app.

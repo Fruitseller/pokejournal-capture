@@ -10,9 +10,17 @@ import Combine
 struct SessionEditorView: View {
     @Binding var session: DraftSession
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.scenePhase) private var scenePhase
 
     @Query(sort: \Game.lastUsedAt, order: .reverse)
     private var games: [Game]
+
+    // Local text buffers to decouple keystrokes from SwiftData change tracking
+    @State private var activitiesText = ""
+    @State private var plansText = ""
+    @State private var thoughtsText = ""
+    @State private var isDirty = false
+    @State private var isLoading = false
 
     @State private var showingGamePicker = false
     @State private var showingTeamEditor = false
@@ -23,31 +31,140 @@ struct SessionEditorView: View {
     private let autosaveTimer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                headerSection
+        Form {
+            // MARK: - Game & Date
+            Section {
+                Button {
+                    showingGamePicker = true
+                } label: {
+                    LabeledContent {
+                        HStack {
+                            Text(session.game?.name ?? "Auswählen")
+                                .foregroundStyle(session.game == nil ? .secondary : .primary)
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundStyle(.tertiary)
+                        }
+                    } label: {
+                        Label("Spiel", systemImage: "gamecontroller.fill")
+                    }
+                }
+                .buttonStyle(.plain)
 
-                Divider()
-
-                voiceRecordingSection
-
-                Divider()
-
-                textFieldsSection
-
-                Divider()
-
-                teamSection
-
-                Spacer(minLength: 100)
+                DatePicker(
+                    selection: $session.date,
+                    displayedComponents: .date
+                ) {
+                    Label("Datum", systemImage: "calendar")
+                }
             }
-            .padding()
+
+            // MARK: - Voice Recording
+            Section {
+                Button {
+                    showingVoiceRecorder = true
+                } label: {
+                    Label {
+                        HStack {
+                            Text("Sprachnotiz aufnehmen")
+                            Spacer()
+                            if !session.voiceNotes.isEmpty {
+                                Text("\(session.voiceNotes.count)")
+                                    .font(.footnote)
+                                    .fontWeight(.medium)
+                                    .foregroundStyle(.white)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 2)
+                                    .background(.accent, in: Capsule())
+                            }
+                        }
+                    } icon: {
+                        Image(systemName: "mic.fill")
+                    }
+                }
+                .buttonStyle(.plain)
+            }
+
+            // MARK: - Activities
+            Section {
+                TextEditor(text: $activitiesText)
+                    .frame(minHeight: 80)
+                    .overlay(alignment: .topLeading) {
+                        if activitiesText.isEmpty {
+                            Text("Was hast du gemacht?")
+                                .foregroundStyle(.tertiary)
+                                .padding(.top, 8)
+                                .padding(.leading, 4)
+                                .allowsHitTesting(false)
+                        }
+                    }
+                    .onChange(of: activitiesText) { if !isLoading { isDirty = true } }
+            } header: {
+                Label("Aktivitäten", systemImage: "figure.run")
+            }
+
+            // MARK: - Plans
+            Section {
+                TextEditor(text: $plansText)
+                    .frame(minHeight: 80)
+                    .overlay(alignment: .topLeading) {
+                        if plansText.isEmpty {
+                            Text("Was planst du als nächstes?")
+                                .foregroundStyle(.tertiary)
+                                .padding(.top, 8)
+                                .padding(.leading, 4)
+                                .allowsHitTesting(false)
+                        }
+                    }
+                    .onChange(of: plansText) { if !isLoading { isDirty = true } }
+            } header: {
+                Label("Pläne", systemImage: "list.bullet.clipboard")
+            }
+
+            // MARK: - Thoughts
+            Section {
+                TextEditor(text: $thoughtsText)
+                    .frame(minHeight: 80)
+                    .overlay(alignment: .topLeading) {
+                        if thoughtsText.isEmpty {
+                            Text("Sonstige Gedanken...")
+                                .foregroundStyle(.tertiary)
+                                .padding(.top, 8)
+                                .padding(.leading, 4)
+                                .allowsHitTesting(false)
+                        }
+                    }
+                    .onChange(of: thoughtsText) { if !isLoading { isDirty = true } }
+            } header: {
+                Label("Gedanken", systemImage: "brain.head.profile")
+            }
+
+            // MARK: - Team
+            Section {
+                if session.team.isEmpty {
+                    Button {
+                        showingTeamEditor = true
+                    } label: {
+                        Label("Team hinzufügen", systemImage: "plus.circle")
+                    }
+                } else {
+                    TeamPreviewGrid(team: session.team.sorted { $0.slotIndex < $1.slotIndex })
+
+                    Button {
+                        showingTeamEditor = true
+                    } label: {
+                        Label("Team bearbeiten", systemImage: "pencil")
+                    }
+                }
+            } header: {
+                Label("Team", systemImage: "person.3.fill")
+            }
         }
         .navigationTitle("Session")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                exportButton
+                exportMenu
             }
         }
         .sheet(isPresented: $showingGamePicker) {
@@ -56,145 +173,37 @@ struct SessionEditorView: View {
         .sheet(isPresented: $showingTeamEditor) {
             TeamEditorView(session: session)
         }
-        .sheet(isPresented: $showingVoiceRecorder) {
+        .sheet(isPresented: $showingVoiceRecorder, onDismiss: {
+            loadFromSession()
+        }) {
             VoiceRecorderView(session: $session)
+        }
+        .onChange(of: showingVoiceRecorder) {
+            if showingVoiceRecorder { flushIfDirty() }
         }
         .sheet(isPresented: $showingExportPreview) {
             ExportPreviewView(session: session, onCopy: copyToClipboard)
         }
+        .onAppear {
+            loadFromSession()
+        }
+        .onDisappear {
+            flushIfDirty()
+        }
+        .onChange(of: scenePhase) {
+            if scenePhase != .active {
+                flushIfDirty()
+            }
+        }
         .onReceive(autosaveTimer) { _ in
-            session.markUpdated()
-            try? modelContext.save()
+            flushIfDirty()
         }
         .sensoryFeedback(.success, trigger: copiedToClipboard)
     }
 
-    // MARK: - Header Section
-
-    private var headerSection: some View {
-        VStack(spacing: 12) {
-            // Game Selection
-            Button {
-                showingGamePicker = true
-            } label: {
-                HStack {
-                    Image(systemName: "gamecontroller.fill")
-                    Text(session.game?.name ?? "Spiel wählen")
-                        .fontWeight(.medium)
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                .padding()
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
-            }
-            .buttonStyle(.plain)
-
-            // Date Display
-            HStack {
-                Image(systemName: "calendar")
-                Text(session.date, style: .date)
-                Spacer()
-            }
-            .foregroundStyle(.secondary)
-            .padding(.horizontal)
-        }
-    }
-
-    // MARK: - Voice Recording Section
-
-    private var voiceRecordingSection: some View {
-        VStack(spacing: 12) {
-            Button {
-                showingVoiceRecorder = true
-            } label: {
-                HStack {
-                    Image(systemName: "mic.fill")
-                        .font(.title2)
-                    Text("Sprachnotiz aufnehmen")
-                        .fontWeight(.medium)
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
-            }
-            .buttonStyle(.plain)
-
-            if !session.voiceNotes.isEmpty {
-                Text("\(session.voiceNotes.count) Sprachnotiz(en) aufgenommen")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-        }
-    }
-
-    // MARK: - Text Fields Section
-
-    private var textFieldsSection: some View {
-        VStack(spacing: 16) {
-            ExpandableTextField(
-                title: "Aktivitäten",
-                icon: "figure.run",
-                text: $session.activities,
-                placeholder: "Was hast du gemacht?"
-            )
-
-            ExpandableTextField(
-                title: "Pläne",
-                icon: "list.bullet.clipboard",
-                text: $session.plans,
-                placeholder: "Was planst du als nächstes?"
-            )
-
-            ExpandableTextField(
-                title: "Gedanken",
-                icon: "brain.head.profile",
-                text: $session.thoughts,
-                placeholder: "Sonstige Gedanken..."
-            )
-        }
-    }
-
-    // MARK: - Team Section
-
-    private var teamSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Image(systemName: "person.3.fill")
-                Text("Team")
-                    .font(.headline)
-                Spacer()
-                Button {
-                    showingTeamEditor = true
-                } label: {
-                    Text("Bearbeiten")
-                        .font(.subheadline)
-                }
-            }
-
-            if session.team.isEmpty {
-                Button {
-                    showingTeamEditor = true
-                } label: {
-                    HStack {
-                        Image(systemName: "plus.circle.fill")
-                        Text("Team hinzufügen")
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
-                }
-                .buttonStyle(.plain)
-            } else {
-                TeamPreviewGrid(team: session.team.sorted { $0.slotIndex < $1.slotIndex })
-            }
-        }
-    }
-
     // MARK: - Export
 
-    private var exportButton: some View {
+    private var exportMenu: some View {
         Menu {
             Button {
                 copyToClipboard()
@@ -213,73 +222,36 @@ struct SessionEditorView: View {
         }
     }
 
+    private func loadFromSession() {
+        isLoading = true
+        activitiesText = session.activities
+        plansText = session.plans
+        thoughtsText = session.thoughts
+        isDirty = false
+        DispatchQueue.main.async { isLoading = false }
+    }
+
+    private func syncToSession() {
+        session.activities = activitiesText
+        session.plans = plansText
+        session.thoughts = thoughtsText
+    }
+
+    private func flushIfDirty() {
+        guard isDirty else { return }
+        syncToSession()
+        session.markUpdated()
+        try? modelContext.save()
+        isDirty = false
+    }
+
     private func copyToClipboard() {
+        syncToSession()
         let markdown = ExportService.generateMarkdown(for: session)
         UIPasteboard.general.string = markdown
         copiedToClipboard.toggle()
         session.markExported()
         try? modelContext.save()
-    }
-}
-
-// MARK: - Expandable Text Field
-
-struct ExpandableTextField: View {
-    let title: String
-    let icon: String
-    @Binding var text: String
-    let placeholder: String
-
-    @State private var isExpanded = false
-    @FocusState private var isFocused: Bool
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Button {
-                withAnimation(.spring(duration: 0.3)) {
-                    isExpanded.toggle()
-                    if isExpanded {
-                        isFocused = true
-                    }
-                }
-            } label: {
-                HStack {
-                    Image(systemName: icon)
-                    Text(title)
-                        .fontWeight(.medium)
-                    Spacer()
-                    if !text.isEmpty {
-                        Circle()
-                            .fill(.green)
-                            .frame(width: 8, height: 8)
-                    }
-                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-            }
-            .buttonStyle(.plain)
-
-            if isExpanded {
-                TextEditor(text: $text)
-                    .focused($isFocused)
-                    .frame(minHeight: 100)
-                    .scrollContentBackground(.hidden)
-                    .padding(8)
-                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 8))
-                    .overlay {
-                        if text.isEmpty {
-                            Text(placeholder)
-                                .foregroundStyle(.tertiary)
-                                .allowsHitTesting(false)
-                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                                .padding(16)
-                        }
-                    }
-            }
-        }
-        .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
     }
 }
 
@@ -308,7 +280,6 @@ struct TeamPreviewGrid: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 8))
             }
         }
     }

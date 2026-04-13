@@ -7,7 +7,6 @@ import SwiftUI
 import SwiftData
 
 struct GamesManagementView: View {
-    @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
 
     @Query(sort: \Game.name)
@@ -18,55 +17,47 @@ struct GamesManagementView: View {
     @State private var newGameSlug = ""
 
     var body: some View {
-        NavigationStack {
-            List {
-                ForEach(games) { game in
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(game.name)
-                            .fontWeight(.medium)
-                        Text("Slug: \(game.slug)")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                        if let lastUsed = game.lastUsedAt {
-                            Text("Zuletzt: \(lastUsed, style: .relative)")
-                                .font(.caption2)
-                                .foregroundStyle(.tertiary)
-                        }
-                    }
-                    .padding(.vertical, 2)
-                }
-                .onDelete(perform: deleteGames)
-            }
-            .navigationTitle("Spiele verwalten")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Schließen") {
-                        dismiss()
+        List {
+            ForEach(games) { game in
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(game.name)
+                        .fontWeight(.medium)
+                    Text("Slug: \(game.slug)")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    if let lastUsed = game.lastUsedAt {
+                        Text("Zuletzt: \(lastUsed, style: .relative)")
+                            .font(.caption2)
+                            .foregroundStyle(.tertiary)
                     }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showingAddGame = true
-                    } label: {
-                        Image(systemName: "plus")
-                    }
+                .padding(.vertical, 2)
+            }
+            .onDelete(perform: deleteGames)
+        }
+        .navigationTitle("Spiele")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showingAddGame = true
+                } label: {
+                    Image(systemName: "plus")
                 }
             }
-            .alert("Neues Spiel", isPresented: $showingAddGame) {
-                TextField("Name", text: $newGameName)
-                TextField("Slug (z.B. purpur)", text: $newGameSlug)
-                Button("Abbrechen", role: .cancel) {
-                    resetNewGameFields()
-                }
-                Button("Hinzufügen") {
-                    addGame()
-                }
-                .disabled(newGameName.isEmpty || newGameSlug.isEmpty)
+        }
+        .alert("Neues Spiel", isPresented: $showingAddGame) {
+            TextField("Name", text: $newGameName)
+            TextField("Slug (z.B. purpur)", text: $newGameSlug)
+            Button("Abbrechen", role: .cancel) {
+                resetNewGameFields()
             }
-            .onAppear {
-                ensureDefaultGamesExist()
+            Button("Hinzufügen") {
+                addGame()
             }
+            .disabled(newGameName.isEmpty || newGameSlug.isEmpty)
+        }
+        .onAppear {
+            ensureDefaultGamesExist()
         }
     }
 
@@ -98,9 +89,4 @@ struct GamesManagementView: View {
         }
         try? modelContext.save()
     }
-}
-
-#Preview {
-    GamesManagementView()
-        .modelContainer(for: Game.self, inMemory: true)
 }

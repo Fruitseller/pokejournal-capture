@@ -7,7 +7,6 @@ import SwiftUI
 import SwiftData
 
 struct DraftsListView: View {
-    @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
 
     @Query(filter: #Predicate<DraftSession> { $0.statusRaw == "draft" },
@@ -17,35 +16,27 @@ struct DraftsListView: View {
     let onSelect: (DraftSession) -> Void
 
     var body: some View {
-        NavigationStack {
-            Group {
-                if drafts.isEmpty {
-                    ContentUnavailableView(
-                        "Keine Entwürfe",
-                        systemImage: "doc.text",
-                        description: Text("Du hast keine offenen Session-Entwürfe.")
-                    )
-                } else {
-                    List {
-                        ForEach(drafts) { draft in
-                            draftRow(draft)
-                        }
-                        .onDelete(perform: deleteDrafts)
+        Group {
+            if drafts.isEmpty {
+                ContentUnavailableView(
+                    "Keine Entwürfe",
+                    systemImage: "doc.text",
+                    description: Text("Du hast keine offenen Session-Entwürfe.")
+                )
+            } else {
+                List {
+                    ForEach(drafts) { draft in
+                        draftRow(draft)
                     }
+                    .onDelete(perform: deleteDrafts)
                 }
             }
-            .navigationTitle("Entwürfe")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Schließen") {
-                        dismiss()
-                    }
-                }
-                if !drafts.isEmpty {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        EditButton()
-                    }
+        }
+        .navigationTitle("Entwürfe")
+        .toolbar {
+            if !drafts.isEmpty {
+                ToolbarItem(placement: .topBarTrailing) {
+                    EditButton()
                 }
             }
         }
@@ -99,9 +90,4 @@ struct DraftsListView: View {
         }
         try? modelContext.save()
     }
-}
-
-#Preview {
-    DraftsListView { _ in }
-        .modelContainer(for: DraftSession.self, inMemory: true)
 }
