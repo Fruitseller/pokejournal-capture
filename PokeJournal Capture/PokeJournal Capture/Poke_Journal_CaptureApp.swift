@@ -10,6 +10,9 @@ import SwiftData
 
 @main
 struct Poke_Journal_CaptureApp: App {
+    // Trigger async Pokemon loading early so data is ready when needed.
+    private let _pokemonStore = PokemonDataStore.shared
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             DraftSession.self,

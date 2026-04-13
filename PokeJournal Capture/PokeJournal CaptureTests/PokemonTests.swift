@@ -103,6 +103,24 @@ struct PokemonSearchTests {
     }
 }
 
+@MainActor
+struct PokemonAsyncLoadTests {
+
+    @Test func testPokemonStoreIsLoadedAfterInit() {
+        let store = PokemonDataStore(testPokemon: [
+            Pokemon(id: 1, nameDE: "Bisasam", nameEN: "Bulbasaur", types: ["Pflanze"]),
+        ])
+        #expect(store.isLoaded)
+        #expect(store.pokemon.count == 1)
+    }
+
+    @Test func testEmptyStoreIsStillMarkedLoaded() {
+        let store = PokemonDataStore(testPokemon: [])
+        #expect(store.isLoaded)
+        #expect(store.pokemon.isEmpty)
+    }
+}
+
 private enum FixtureError: Error, CustomStringConvertible {
     case missingFile(String)
     var description: String {

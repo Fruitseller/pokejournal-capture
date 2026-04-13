@@ -30,7 +30,13 @@ final class PokemonDataStore: ObservableObject {
     @Published private(set) var isLoaded = false
 
     private init() {
-        loadPokemon()
+        Task.detached(priority: .userInitiated) {
+            let loaded = Self.decodePokemonFromBundle()
+            await MainActor.run {
+                self.pokemon = loaded
+                self.isLoaded = true
+            }
+        }
     }
 
     #if DEBUG
@@ -41,19 +47,19 @@ final class PokemonDataStore: ObservableObject {
     }
     #endif
 
-    private func loadPokemon() {
+    /// Pure decoding on the calling thread — no main-actor dependency.
+    private nonisolated static func decodePokemonFromBundle() -> [Pokemon] {
         guard let url = Bundle.main.url(forResource: "pokemon", withExtension: "json") else {
             print("Pokemon JSON not found in bundle")
-            return
+            return []
         }
 
         do {
             let data = try Data(contentsOf: url)
-            let decoder = JSONDecoder()
-            pokemon = try decoder.decode([Pokemon].self, from: data)
-            isLoaded = true
+            return try JSONDecoder().decode([Pokemon].self, from: data)
         } catch {
             print("Failed to load Pokemon data: \(error)")
+            return []
         }
     }
 
