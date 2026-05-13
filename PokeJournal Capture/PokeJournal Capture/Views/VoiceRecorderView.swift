@@ -33,6 +33,14 @@ struct VoiceRecorderView: View {
             case .thoughts: return "brain.head.profile"
             }
         }
+
+        var sessionKeyPath: ReferenceWritableKeyPath<DraftSession, String> {
+            switch self {
+            case .activities: return \.activities
+            case .plans: return \.plans
+            case .thoughts: return \.thoughts
+            }
+        }
     }
 
     var body: some View {
@@ -174,27 +182,9 @@ struct VoiceRecorderView: View {
         guard !transcribedText.isEmpty else { return }
 
         let textToAdd = transcribedText.trimmingCharacters(in: .whitespacesAndNewlines)
-
-        switch selectedTarget {
-        case .activities:
-            if session.activities.isEmpty {
-                session.activities = textToAdd
-            } else {
-                session.activities += "\n\n" + textToAdd
-            }
-        case .plans:
-            if session.plans.isEmpty {
-                session.plans = textToAdd
-            } else {
-                session.plans += "\n\n" + textToAdd
-            }
-        case .thoughts:
-            if session.thoughts.isEmpty {
-                session.thoughts = textToAdd
-            } else {
-                session.thoughts += "\n\n" + textToAdd
-            }
-        }
+        let keyPath = selectedTarget.sessionKeyPath
+        let existing = session[keyPath: keyPath]
+        session[keyPath: keyPath] = existing.isEmpty ? textToAdd : existing + "\n\n" + textToAdd
 
         session.voiceNotes.append(textToAdd)
         session.markUpdated()

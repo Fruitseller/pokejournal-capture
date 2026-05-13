@@ -22,7 +22,9 @@ struct Poke_Journal_CaptureApp: App {
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            let container = try ModelContainer(for: schema, configurations: [modelConfiguration])
+            Self.seedDefaultGamesIfNeeded(in: container)
+            return container
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
@@ -33,5 +35,17 @@ struct Poke_Journal_CaptureApp: App {
             ContentView()
         }
         .modelContainer(sharedModelContainer)
+    }
+
+    @MainActor
+    private static func seedDefaultGamesIfNeeded(in container: ModelContainer) {
+        let context = container.mainContext
+        let existing = (try? context.fetchCount(FetchDescriptor<Game>())) ?? 0
+        guard existing == 0 else { return }
+
+        for gameData in Game.predefinedGames {
+            context.insert(Game(name: gameData.name, slug: gameData.slug))
+        }
+        try? context.save()
     }
 }
