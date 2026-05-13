@@ -19,8 +19,6 @@ struct SessionEditorView: View {
     @State private var activitiesText = ""
     @State private var plansText = ""
     @State private var thoughtsText = ""
-    @State private var isDirty = false
-    @State private var isLoading = false
 
     @State private var showingGamePicker = false
     @State private var showingTeamEditor = false
@@ -85,59 +83,26 @@ struct SessionEditorView: View {
                 .buttonStyle(.plain)
             }
 
-            // MARK: - Activities
-            Section {
-                TextEditor(text: $activitiesText)
-                    .frame(minHeight: 80)
-                    .overlay(alignment: .topLeading) {
-                        if activitiesText.isEmpty {
-                            Text("Was hast du gemacht?")
-                                .foregroundStyle(.tertiary)
-                                .padding(.top, 8)
-                                .padding(.leading, 4)
-                                .allowsHitTesting(false)
-                        }
-                    }
-                    .onChange(of: activitiesText) { if !isLoading { isDirty = true } }
-            } header: {
-                Label("Aktivitäten", systemImage: "figure.run")
-            }
+            editorSection(
+                title: "Aktivitäten",
+                icon: "figure.run",
+                placeholder: "Was hast du gemacht?",
+                text: $activitiesText
+            )
 
-            // MARK: - Plans
-            Section {
-                TextEditor(text: $plansText)
-                    .frame(minHeight: 80)
-                    .overlay(alignment: .topLeading) {
-                        if plansText.isEmpty {
-                            Text("Was planst du als nächstes?")
-                                .foregroundStyle(.tertiary)
-                                .padding(.top, 8)
-                                .padding(.leading, 4)
-                                .allowsHitTesting(false)
-                        }
-                    }
-                    .onChange(of: plansText) { if !isLoading { isDirty = true } }
-            } header: {
-                Label("Pläne", systemImage: "list.bullet.clipboard")
-            }
+            editorSection(
+                title: "Pläne",
+                icon: "list.bullet.clipboard",
+                placeholder: "Was planst du als nächstes?",
+                text: $plansText
+            )
 
-            // MARK: - Thoughts
-            Section {
-                TextEditor(text: $thoughtsText)
-                    .frame(minHeight: 80)
-                    .overlay(alignment: .topLeading) {
-                        if thoughtsText.isEmpty {
-                            Text("Sonstige Gedanken...")
-                                .foregroundStyle(.tertiary)
-                                .padding(.top, 8)
-                                .padding(.leading, 4)
-                                .allowsHitTesting(false)
-                        }
-                    }
-                    .onChange(of: thoughtsText) { if !isLoading { isDirty = true } }
-            } header: {
-                Label("Gedanken", systemImage: "brain.head.profile")
-            }
+            editorSection(
+                title: "Gedanken",
+                icon: "brain.head.profile",
+                placeholder: "Sonstige Gedanken...",
+                text: $thoughtsText
+            )
 
             // MARK: - Team
             Section {
@@ -222,13 +187,34 @@ struct SessionEditorView: View {
         }
     }
 
+    @ViewBuilder
+    private func editorSection(
+        title: String,
+        icon: String,
+        placeholder: String,
+        text: Binding<String>
+    ) -> some View {
+        Section {
+            TextEditor(text: text)
+                .frame(minHeight: 80)
+                .overlay(alignment: .topLeading) {
+                    if text.wrappedValue.isEmpty {
+                        Text(placeholder)
+                            .foregroundStyle(.tertiary)
+                            .padding(.top, 8)
+                            .padding(.leading, 4)
+                            .allowsHitTesting(false)
+                    }
+                }
+        } header: {
+            Label(title, systemImage: icon)
+        }
+    }
+
     private func loadFromSession() {
-        isLoading = true
         activitiesText = session.activities
         plansText = session.plans
         thoughtsText = session.thoughts
-        isDirty = false
-        DispatchQueue.main.async { isLoading = false }
     }
 
     private func syncToSession() {
@@ -238,11 +224,12 @@ struct SessionEditorView: View {
     }
 
     private func flushIfDirty() {
-        guard isDirty else { return }
+        guard activitiesText != session.activities
+            || plansText != session.plans
+            || thoughtsText != session.thoughts else { return }
         syncToSession()
         session.markUpdated()
         try? modelContext.save()
-        isDirty = false
     }
 
     private func copyToClipboard() {

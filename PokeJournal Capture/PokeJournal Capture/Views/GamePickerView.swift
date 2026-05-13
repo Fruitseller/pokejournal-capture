@@ -54,9 +54,6 @@ struct GamePickerView: View {
                     }
                 }
             }
-            .onAppear {
-                ensureDefaultGamesExist()
-            }
         }
     }
 
@@ -89,16 +86,6 @@ struct GamePickerView: View {
         selectedGame = game
         try? modelContext.save()
         dismiss()
-    }
-
-    private func ensureDefaultGamesExist() {
-        guard games.isEmpty else { return }
-
-        for gameData in Game.predefinedGames {
-            let game = Game(name: gameData.name, slug: gameData.slug)
-            modelContext.insert(game)
-        }
-        try? modelContext.save()
     }
 }
 

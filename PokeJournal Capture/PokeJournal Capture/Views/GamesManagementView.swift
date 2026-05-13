@@ -56,9 +56,6 @@ struct GamesManagementView: View {
             }
             .disabled(newGameName.isEmpty || newGameSlug.isEmpty)
         }
-        .onAppear {
-            ensureDefaultGamesExist()
-        }
     }
 
     private func addGame() {
@@ -76,16 +73,6 @@ struct GamesManagementView: View {
     private func deleteGames(at offsets: IndexSet) {
         for index in offsets {
             modelContext.delete(games[index])
-        }
-        try? modelContext.save()
-    }
-
-    private func ensureDefaultGamesExist() {
-        guard games.isEmpty else { return }
-
-        for gameData in Game.predefinedGames {
-            let game = Game(name: gameData.name, slug: gameData.slug)
-            modelContext.insert(game)
         }
         try? modelContext.save()
     }
