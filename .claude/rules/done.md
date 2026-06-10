@@ -14,8 +14,8 @@ means for this project.
   proves nothing.
 - **The build is clean.** `xcodebuild build` succeeds with zero errors and
   zero warnings on the `PokeJournal Capture` scheme.
-- **The test suite passes.** `script/test` exits 0. No skipped tests unless
-  documented with a reason.
+- **The test suite passes.** `./scripts/test.sh test` exits 0. No skipped
+  tests unless documented with a reason.
 - **Error paths are exercised.** Happy-path-only verification is incomplete.
   Done means you've confirmed what happens when inputs are wrong or state
   is unexpected.

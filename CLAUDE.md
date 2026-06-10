@@ -21,18 +21,16 @@ python3 scripts/fetch_pokemon_data.py
 # List available schemes
 xcodebuild -list -project "PokeJournal Capture/PokeJournal Capture.xcodeproj"
 
-# Build for simulator
-xcodebuild build \
-  -project "PokeJournal Capture/PokeJournal Capture.xcodeproj" \
-  -scheme "PokeJournal Capture" \
-  -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
+# Run the full test suite (picks a suitable simulator automatically)
+./scripts/test.sh test
 
-# Run tests
-xcodebuild test \
-  -project "PokeJournal Capture/PokeJournal Capture.xcodeproj" \
-  -scheme "PokeJournal Capture" \
-  -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
+# Fast check: build only, no tests
+./scripts/test.sh build
 ```
+
+Both `scripts/test.sh` modes pick the newest available iOS simulator runtime
+(preferring an already-booted device) and fall back to
+`platform=iOS Simulator,name=iPhone 17 Pro`.
 
 ## Architecture
 

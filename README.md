@@ -52,17 +52,17 @@ PokeJournal Capture/
 3. Sicherstellen, dass `pokemon.json` in **Build Phases → Copy Bundle Resources** enthalten ist
 4. Build & Run
 
-## Build via CLI
+## Build & Tests via CLI
 
 ```bash
+# Tests ausführen (wählt automatisch einen passenden Simulator)
+./scripts/test.sh test
+
+# Nur bauen (schneller Check ohne Testlauf)
+./scripts/test.sh build
+
 # Schemes auflisten
 xcodebuild -list -project "PokeJournal Capture/PokeJournal Capture.xcodeproj"
-
-# Build
-xcodebuild build \
-  -project "PokeJournal Capture/PokeJournal Capture.xcodeproj" \
-  -scheme "PokeJournal Capture" \
-  -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
 
 ## Export-Format
